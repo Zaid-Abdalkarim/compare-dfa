@@ -15,6 +15,8 @@ const App = () => {
       position: "absolute",
       bottom: 0,
       border: '4px solid black',
+      top: '50%',
+      height: 80,
       width: '100%'
     }
   }
@@ -24,7 +26,7 @@ const App = () => {
       <div  style={styles.border}>
         <DfaMaker one={true}/>
       </div>
-      <hr style={styles.horizontalLine}></hr>
+      {/* <hr style={styles.horizontalLine}></hr> */}
       <div style={styles.bottomDFA}>
         <DfaMaker one={false}/>
       </div>

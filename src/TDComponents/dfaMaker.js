@@ -32,7 +32,7 @@ const DfaMaker = (props) => {
 
   const createArrow = (event, fromNode) => {
     const arrow = React.createElement(Xarrow, {
-      start: `state-${fromNode}`,
+      start: `state-${props.one ? '1' : '2'}-${fromNode}`,
       end: "empty-drag",
     })
     setTempArrow(arrow)
@@ -63,7 +63,7 @@ const DfaMaker = (props) => {
     const elem = document.elementsFromPoint(event.clientX, event.clientY)
     let stateIndex = -1
     for(var i in Object.entries(elem)) {
-      if (elem[i]?.id.includes('state-')) {
+      if (elem[i]?.id.includes(`state-${props.one ? '1' : '2'}`)) {
         stateIndex = i
       }
     }
@@ -73,10 +73,10 @@ const DfaMaker = (props) => {
     }
 
     const arrow = React.createElement(Xarrow, {
-      start: `state-${fromNode}`,
+      start: `state-${props.one ? '1' : '2'}-${fromNode}`,
       end: elem[stateIndex]?.id,
       id: `arrow-${fromNode}`,
-      curvness: `state-${fromNode}` === elem[stateIndex]?.id ? 2 : Math.random() * 2,
+      curvness: `state-${props.one ? '1' : '2'}-${fromNode}` === elem[stateIndex]?.id ? 2 : Math.random() * 2,
       labels:{ middle: <input style={{width: 25}} onChange={(value) => updateTransition(fromNode, elem[stateIndex]?.id.split('-')[1], value.target.value)}></input> }
     })
     setTempArrow(null)
@@ -136,13 +136,17 @@ const DfaMaker = (props) => {
         return
       }
     }
-
+    const subY = props.one ? 0 : ((event.screenY / 2) + 12)
+    const locY = event.clientY - subY
+    console.log(locY,  props.one ? 0 : ((event.screenY / 2) + 12))
+    console.log(document.body.offsetHeight)
     const circle = React.createElement(DraggableCircle, {
       innerDetails: innerDetails(nodeType),
       locX: event.clientX,
-      locY: event.clientY,
+      locY,
       color: NodeTypes[nodeType]?.color,
       stateIndex: circles.length, 
+      one: props.one,
       createArrow: createArrow,
       setArrow: setArrow,
       emptyDrag: emptyDrag,

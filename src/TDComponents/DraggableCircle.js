@@ -62,7 +62,7 @@ function DraggableCircle(props) {
 
   return (
     <div 
-      id={`state-${props.stateIndex}`}
+      id={`state-${props?.one ? '1' : '2'}-${props.stateIndex}`}
       style={{...styles.circle, ...{
         top: locY - (75/2),
         left: locX - (75/2),
