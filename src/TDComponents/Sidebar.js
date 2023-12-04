@@ -11,8 +11,8 @@ const Sidebar = (props) => {
   }
 
   return (
-    <aside>
-      <div className="description">You can drag these nodes to the pane on the right.</div>
+    <aside style={{display: 'flex', height: 75}}>
+      <div className="description">Drag Nodes {props.one ? 'ABOVE' : 'BELOW'} Black Line. Dont make. Two DFA's can interact so don't mix</div>
       <div className="dndnode input" onDragEnd={(event) => props.onDrag(event, NodeTypes.START.title.toUpperCase())} draggable>
         <Circle
           color = {NodeTypes.START.color}

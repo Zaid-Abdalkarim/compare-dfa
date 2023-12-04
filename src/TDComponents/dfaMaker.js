@@ -25,7 +25,7 @@ const DfaMaker = (props) => {
   const styles = {
     sidebar: {
       border: '4px solid black',
-      width: 100
+      display: 'flex'
     }
   }
 
@@ -88,7 +88,7 @@ const DfaMaker = (props) => {
 
   const innerDetails = (text) => {
     return (
-      <h3 style={{textAlign: 'center'}}>{text}</h3>
+      <h4 style={{textAlign: 'center'}}>{text}</h4>
     )
   }
 
@@ -162,7 +162,7 @@ const DfaMaker = (props) => {
   }
 
   return (
-    <>
+    <div>
       <Xwrapper>
         {
           circles
@@ -180,10 +180,10 @@ const DfaMaker = (props) => {
         position: 'absolute'
       }}></div>
       <div style={styles.sidebar}>
-        <Sidebar onDrag={onDrag} />
+        <Sidebar first={props.one} onDrag={onDrag} />
       </div>
 
-    </>
+    </div>
   );
 };
 
