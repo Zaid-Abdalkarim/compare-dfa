@@ -7,6 +7,7 @@ import DraggableCircle from './DraggableCircle';
 import Xarrow, {useXarrow, Xwrapper} from 'react-xarrows';
 import { setFinalStates, setNumberOfFinalStates, setNumberOfStartStates, setNumberOfStates, setTransitions } from '../Redux/dfaReducer';
 import { useDispatch } from 'react-redux';
+import { store } from '../Redux/store';
 
 const DfaMaker = (props) => {
   const [circles, setCircles] = useState([])
@@ -15,9 +16,9 @@ const DfaMaker = (props) => {
   const [emptyX, setEmptyX] = useState(0)
   const [emptyY, setEmptyY] = useState(0)
   const [localFinalStates, setLocalFinalStates] = useState([])
-  const [localTransitions, setLocalTransitions] = useState({})
   const [numberOfLocalFinalStates, setNumberOfLocalFinalStates] = useState(0)
   const [startStates, setStartStates] = useState(0)
+  
   const updateXarrrow = useXarrow()
 
   const dispatch = useDispatch()
@@ -40,21 +41,28 @@ const DfaMaker = (props) => {
 
 
   const updateTransition = (fromNode, toNode, newValue) => {
-    console.log(newValue)
-    let tempTransitions = localTransitions
     const splitValues = newValue.split(',')
-    if (!localTransitions[fromNode]) {
-      tempTransitions[fromNode] = {}
+    const transition = {
+      [fromNode]: {
+        [toNode] : splitValues,
+      }
     }
-    if (!tempTransitions[fromNode][toNode]) {
-      tempTransitions[fromNode][toNode] = []
+    let newTransitions
+    if (props.one) {
+      newTransitions = {
+        ...store.getState().dfa.transitionsOne,
+        ...transition
+      }
+    } else {
+      newTransitions = {
+        ...store.getState().dfa.transitionsTwo,
+        ...transition
+      }
     }
-    tempTransitions[fromNode][toNode] = splitValues
-    setLocalTransitions({...localTransitions, ...tempTransitions})
     
     const payload = {
       one: props?.one,
-      transitions: {...localTransitions, ...tempTransitions}
+      transitions: newTransitions
     }
     dispatch(setTransitions(payload))
   }
@@ -77,7 +85,7 @@ const DfaMaker = (props) => {
       end: elem[stateIndex]?.id,
       id: `arrow-${fromNode}`,
       curvness: `state-${props.one ? '1' : '2'}-${fromNode}` === elem[stateIndex]?.id ? 2 : Math.random() * 2,
-      labels:{ middle: <input style={{width: 25}} onChange={(value) => updateTransition(fromNode, elem[stateIndex]?.id.split('-')[1], value.target.value)}></input> }
+      labels:{ middle: <input style={{width: 25}} onChange={(value) => updateTransition(fromNode, elem[stateIndex]?.id.split('-')[2], value.target.value)}></input> }
     })
     setTempArrow(null)
     const arrowsObject = arrows
