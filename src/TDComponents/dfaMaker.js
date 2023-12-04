@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import 'reactflow/dist/style.css';
-
 import Sidebar from './Sidebar';
 
 import { NodeTypes } from './NodeTypes';
