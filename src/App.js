@@ -15,12 +15,14 @@ const App = () => {
       left: '35%',
       width: '25%',
       zIndex: 100,
+      border: 'none'
     },
     compareDFA: {
       backgroundColor: 'lightGreen',
       marginLeft: '35%',
       width: '25%',
       zIndex: 100,
+      border: 'none'
     },
     bottomDFA: {
       position: "absolute",
