@@ -144,10 +144,8 @@ const DfaMaker = (props) => {
         return
       }
     }
-    const subY = props.one ? 0 : ((event.screenY / 2) + 12)
+    const subY = props.one ? 0 : ((event.screenY / 1.7))
     const locY = event.clientY - subY
-    console.log(locY,  props.one ? 0 : ((event.screenY / 2) + 12))
-    console.log(document.body.offsetHeight)
     const circle = React.createElement(DraggableCircle, {
       innerDetails: innerDetails(nodeType),
       locX: event.clientX,

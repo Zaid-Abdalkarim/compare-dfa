@@ -1,3 +1,4 @@
+import { setDialogOpen } from "../Redux/dfaReducer"
 import { store } from "../Redux/store"
 
 export const getAllTransitions = () => {
@@ -38,3 +39,7 @@ export const getStartStates = () => {
 
   return {dfaOne: startStateOne, dfaTwo: startStateTow}
 }
+
+export const showDfasMatchDialog = (dfasMatch) => {
+  store.dispatch(setDialogOpen({open: true, dfasMatch: dfasMatch}))
+} 

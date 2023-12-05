@@ -41,8 +41,9 @@ function DraggableCircle(props) {
   const onDragEnd = (event) => {
     if (event.clientX !== 0) {
       event.stopPropagation();
+      const subY = props.one ? 0 : ((event.screenY / 1.7))
       setLocX(event.clientX)
-      setLocY(event.clientY)
+      setLocY(event.clientY - subY)
     }
     props.updateXarrrow(event)
   }

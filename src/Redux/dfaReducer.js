@@ -16,7 +16,10 @@ export const dfaReducer = createSlice({
     transitionsTwo: {},
 
     finalStatesOne: [],
-    finalStatesTwo: []
+    finalStatesTwo: [],
+
+    dialogOpen: false,
+    dfasMatch: false
   },
   reducers: {
     setNumberOfStartStates: (state, action) => {
@@ -54,10 +57,21 @@ export const dfaReducer = createSlice({
         state.finalStatesTwo = action.payload.finalStates
       }
     },
+    setDialogOpen: (state, action) => {
+      state.dialogOpen = action.payload.open
+      state.dfasMatch = action.payload.dfasMatch
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setNumberOfStartStates, setNumberOfFinalStates, setNumberOfStates, setTransitions, setFinalStates } = dfaReducer.actions
+export const { 
+    setNumberOfStartStates,
+    setNumberOfFinalStates,
+    setNumberOfStates,
+    setTransitions,
+    setFinalStates,
+    setDialogOpen
+  } = dfaReducer.actions
 
 export default dfaReducer.reducer
