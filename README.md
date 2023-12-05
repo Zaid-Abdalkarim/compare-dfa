@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Installation
+
+To set up the project, first ensure you have Node.js installed on your PC. You can download it from Node.js website.
+Once Node.js is installed, open your terminal or command prompt and navigate to the directory where you have cloned or downloaded this project. Then run the following command to install all necessary dependencies:
+
+### `npm install`
+
+After the installation is complete, navigate to the 'src' directory within this project folder and continue the below instructions.
+
 ## Available Scripts
 
 In the project directory, you can run:
