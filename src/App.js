@@ -2,8 +2,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { store } from "./Redux/store"
 import DfaMaker from "./TDComponents/dfaMaker"
 import { setDialogOpen } from "./Redux/dfaReducer"
+import EquivalenceChecker from './DFA_Equivalence/EquivalenceChecker'; 
 import * as helper from "./TDComponents/Helper"
 import DFA from "./DFA_Minimization/DFA"
+import DFAReader from './DFA_Equivalence/DFAReader';
+
+
 const App = () => {
   const styles = {
     border: {
@@ -40,7 +44,8 @@ const App = () => {
   const open = useSelector(state => state.dfa.dialogOpen)
   const compareDfaResult = useSelector(state => state.dfa.dfasMatch)
 
-  const handleCompareClick = () => {
+  const handleCompareClick_WithEquivalenceChecker= () => {
+
     const DFA_ONE = "dfaOne";
     const DFA_TWO = "dfaTwo";
     const dfaOneTransitions = helper.getAllTransitions()[DFA_ONE];
@@ -64,6 +69,26 @@ const App = () => {
     console.log(JSON.stringify(minimizedAutomatonOne));
     console.log("");
     console.log(JSON.stringify(minimizedAutomatonTwo));
+
+    let dfaReader1 = new DFAReader(minimizedAutomatonOne);
+    let dfa1 = dfaReader1.createDFA();
+    dfa1.printStates();
+    DFAReader.printDFA(dfa1);
+
+    let dfaReader2 = new DFAReader(minimizedAutomatonTwo);
+    let dfa2 = dfaReader2.createDFA();
+    dfa2.printStates();
+    DFAReader.printDFA(dfa2);
+
+    const equivalenceChecker = new EquivalenceChecker();
+    const areEquivalent = equivalenceChecker.areEquivalent(dfa1, dfa2);
+
+    // Log the result to the console
+    console.log("Are the DFAs equivalent? ", areEquivalent);
+
+    // Dispatch action to update Redux store with comparison result
+    dispatch(setDialogOpen({ open: true, dfasMatch: areEquivalent }));
+
   };
 
   return (
@@ -74,7 +99,9 @@ const App = () => {
           <button onClick={() => dispatch(setDialogOpen({open: false}))}>OK</button>
         </form>
       </dialog>
-      <button style={styles.compareDFA} onClick={handleCompareClick}><h3>Compare DFA's</h3></button>
+      <button style={styles.compareDFA} onClick={() => {
+        handleCompareClick_WithEquivalenceChecker()
+        }}><h3>Compare DFA's</h3></button>
       <div  style={styles.border}>
         <DfaMaker one={true}/>
       </div>
