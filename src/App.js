@@ -2,7 +2,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { store } from "./Redux/store"
 import DfaMaker from "./TDComponents/dfaMaker"
 import { setDialogOpen } from "./Redux/dfaReducer"
-import { showDfasMatchDialog } from "./TDComponents/Helper"
+import { getAllTransitions, getFinalStates, getNumberOfStates, showDfasMatchDialog } from "./TDComponents/Helper"
+import { useEffect } from "react"
 const App = () => {
   const styles = {
     border: {
@@ -47,7 +48,12 @@ const App = () => {
           <button onClick={() => dispatch(setDialogOpen({open: false}))}>OK</button>
         </form>
       </dialog>
-      <button style={styles.compareDFA} onClick={() => {/* YOUR CODE HERE */}}><h3>Compare DFA's</h3></button>
+      <button style={styles.compareDFA} onClick={() => {
+        showDfasMatchDialog(false)
+        console.log(getAllTransitions())
+        console.log(getFinalStates())
+        console.log(getNumberOfStates())
+        }}><h3>Compare DFA's</h3></button>
       <div  style={styles.border}>
         <DfaMaker one={true}/>
       </div>
