@@ -49,14 +49,20 @@ const DfaMaker = (props) => {
     }
     let newTransitions
     if (props.one) {
-      newTransitions = {
-        ...store.getState().dfa.transitionsOne,
-        ...transition
+      if (store.getState().dfa.transitionsOne[fromNode]) {
+        newTransitions = Object.assign({}, store.getState().dfa.transitionsOne, {
+          [fromNode]: {...store.getState().dfa.transitionsOne[fromNode], ...transition[fromNode]}
+        })
+      } else {
+        newTransitions = {...store.getState().dfa.transitionsOne, ...transition}
       }
     } else {
-      newTransitions = {
-        ...store.getState().dfa.transitionsTwo,
-        ...transition
+      if (store.getState().dfa.transitionsTwo[fromNode]) {
+        newTransitions = Object.assign({}, store.getState().dfa.transitionsTwo, {
+          [fromNode]: {...store.getState().dfa.transitionsTwo[fromNode], ...transition[fromNode]}
+        })
+      } else {
+        newTransitions = {...store.getState().dfa.transitionsTwo, ...transition}
       }
     }
     
