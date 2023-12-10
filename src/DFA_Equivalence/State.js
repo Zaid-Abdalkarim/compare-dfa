@@ -22,11 +22,11 @@ class State {
         this.isStart = isStart;
     }
 
-    isStart() {
+    getIsStart() {
         return this.isStart;
     }
 
-    isFinal() {
+    getIsFinal() {
         return this.isFinal;
     }
 
@@ -39,6 +39,7 @@ class State {
     }
 
     getId() {
+        console.log(`Getting ID for state: q${this.id}`);
         return this.id;
     }
 

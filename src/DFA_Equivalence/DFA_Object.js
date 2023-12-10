@@ -1,15 +1,8 @@
+// import State from './State';
 
-
-class DFA {
+class DFA_Object {
 
     constructor() {
-        this.states = new Set();
-        this.startState = null;
-        this.finalStates = new Set();
-    }
-
-    generateBlankDFA() {
-        // Create a new blank DFA with no states or transitions
         this.states = new Set();
         this.startState = null;
         this.finalStates = new Set();
@@ -33,19 +26,39 @@ class DFA {
 
     getState(id) {
         for (const state of this.states) {
-            if (state.getId() === id) {
+            if (state.getId() === id) { // Corrected: calling getId as a method
                 return state;
             }
         }
-        return null; // or throw an exception if a state is not found
+        return null;
     }
 
     addState(state) {
         this.states.add(state);
+        return state;
     }
+    
 
     getStates() {
         return Array.from(this.states);
     }
+
+    printStates() {
+        console.log("DFA States:");
+        this.states.forEach(state => {
+            state.printStateInfo();
+        });
+    }
+
+    printDFA() {
+        console.log("DFA States:");
+        this.states.forEach(state => {
+            state.printStateInfo();
+        });
+
+        console.log(`Start State: q${this.getStartState()?.getId()}`);
+        console.log("Final States:", Array.from(this.finalStates).map(state => `q${state.getId()}`));
+    }
+
 }
-export default DFA
+export default DFA_Object
