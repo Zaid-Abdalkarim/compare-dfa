@@ -1,23 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
-// import { store } from "./Redux/store"
+import { store } from "./Redux/store"
 import DfaMaker from "./TDComponents/dfaMaker"
 import { setDialogOpen } from "./Redux/dfaReducer"
-
-import { getAllTransitions, 
-  getFinalStates, 
-  getNumberOfStates, 
-  showDfasMatchDialog, 
-  getNumberOfFinalStates, 
-  getStartStates 
-} from "./TDComponents/Helper"
-
-// import { useEffect } from "react"
-
-import JSONHelper from './DFA_Equivalence/JSONHelper'; 
-import EquivalenceChecker from './DFA_Equivalence/EquivalenceChecker'; 
-// import DFA from './DFA_Equivalence/DFA';
-
-
+import * as helper from "./TDComponents/Helper"
+import DFA from "./DFA_Minimization/DFA"
 const App = () => {
   const styles = {
     border: {
@@ -53,6 +39,22 @@ const App = () => {
 
   const open = useSelector(state => state.dfa.dialogOpen)
   const compareDfaResult = useSelector(state => state.dfa.dfasMatch)
+
+  const handleCompareClick = () => {
+    const DFA_ONE = "dfaOne";
+    const DFA_TWO = "dfaTwo";
+    const dfaOneTransitions = helper.getAllTransitions()[DFA_ONE];
+    const dfaOneStartState = helper.getStartStates()[DFA_ONE];
+    const dfaOneFinalStates = helper.getFinalStates()[DFA_ONE];
+    const dfaTwoTransitions = helper.getAllTransitions()[DFA_TWO];
+    const dfaTwoStartState = helper.getStartStates()[DFA_TWO];
+    const dfaTwoFinalStates = helper.getFinalStates()[DFA_TWO];
+    //Exporting to use with a domain class for ease of use
+    const dfaOneToDomainObject = new DFA(dfaOneStartState, dfaOneFinalStates, dfaOneTransitions);
+    const dfaTwoToDomainObject = new DFA(dfaTwoStartState, dfaTwoFinalStates, dfaTwoTransitions);
+    console.log(JSON.stringify(dfaOneToDomainObject));
+    console.log(JSON.stringify(dfaTwoToDomainObject));
+  };
 
 
   // Function to generateDFAJSON
@@ -143,13 +145,7 @@ const App = () => {
           <button onClick={() => dispatch(setDialogOpen({open: false}))}>OK</button>
         </form>
       </dialog>
-      <button style={styles.compareDFA} onClick={() => {
-        handleCompareDFA() //-------- 
-        showDfasMatchDialog(false)
-        console.log(getAllTransitions())  
-        console.log(getFinalStates())
-        console.log(getNumberOfStates())
-        }}><h3>Compare DFA's</h3></button>
+      <button style={styles.compareDFA} onClick={handleCompareClick}><h3>Compare DFA's</h3></button>
       <div  style={styles.border}>
         <DfaMaker one={true}/>
       </div>
