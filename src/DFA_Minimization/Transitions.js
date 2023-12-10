@@ -3,5 +3,8 @@ class Transitions {
     constructor(transitions) {
         this.transitions = transitions;
     }
+    getTransitions(){
+        return this.transitions;
+    }
 }
 export default Transitions
