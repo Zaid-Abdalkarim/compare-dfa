@@ -39,7 +39,7 @@ class State {
     }
 
     getId() {
-        console.log(`Getting ID for state: q${this.id}`);
+        // console.log(`Getting ID for state: q${this.id}`);
         return this.id;
     }
 

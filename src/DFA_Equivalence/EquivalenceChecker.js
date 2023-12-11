@@ -66,6 +66,9 @@ class EquivalenceChecker {
                         return false;
                     }
 
+                    // Log the association being formed
+                    console.log(`Forming association: DFA1 State q${nextState1.getId()} and DFA2 State q${nextState2.getId()} on symbol '${symbol}'`);
+
                     stateAssociations.set(nextStatePair, true);
 
                     if (!visitedDFA1.has(nextState1.getId()) && !visitedDFA2.has(nextState2.getId())) {
@@ -79,7 +82,7 @@ class EquivalenceChecker {
     }
 
     printStateAssociations(stateAssociations) {
-        console.log("State Associations:");
+        console.log("State Associations:"); 
         stateAssociations.forEach((value, key) => {
             console.log(`DFA1 State q${key[0]} is associated with DFA2 State q${key[1]}`);
         });
@@ -91,36 +94,61 @@ class EquivalenceChecker {
         console.log(`State2: ${state2 ? `q${state2.getId()}` : "null"}`);
         if (conflictingState1 && conflictingState2) {
             console.log(`Conflict: Trying to associate DFA1 State q${conflictingState1.getId()} with DFA2 State q${conflictingState2.getId()}, which conflicts with existing associations.`);
-            
-            // // Identify the symbol(s) leading to the conflicting states
-            // for (let symbol of this.getAllSymbols(state1, state2)) {
-            //     let nextState1 = state1.getNextState(symbol);
-            //     let nextState2 = state2.getNextState(symbol);
-            //     if (nextState1 === conflictingState1 && nextState2 !== conflictingState2) {
-            //         console.log(`Conflict found on symbol '${symbol}': DFA1 transitions to conflicting state q${conflictingState1.getId()} while DFA2 transitions to a different state q${nextState2 ? nextState2.getId() : "null"}.`);
-            //     } else if (nextState2 === conflictingState2 && nextState1 !== conflictingState1) {
-            //         console.log(`Conflict found on symbol '${symbol}': DFA2 transitions to conflicting state q${conflictingState2.getId()} while DFA1 transitions to a different state q${nextState1 ? nextState1.getId() : "null"}.`);
-            //     }
-            // }
                 
-            let conflictingPair = [conflictingState1.getId(), conflictingState2.getId()];
-            if (stateAssociations.has(conflictingPair)) {
-                console.log(`Existing association for this pair: ${stateAssociations.get(conflictingPair)}`);
+            // // Creating a string representation of the conflicting pair, similar to Java's Pair
+            // let conflictingPair = `q${conflictingState1.getId()}-q${conflictingState2.getId()}`;
+            // if (stateAssociations.has(conflictingPair)) {
+            //     console.log(`Existing association for this pair: ${stateAssociations.get(conflictingPair)}`);
+            // } else {
+            //     console.log("No existing associations found for this pair.");
+            // }
+            
+            // Check for existing associations for each conflicting state
+            let existingAssociation1 = this.findAssociationForState(conflictingState1, stateAssociations);
+            let existingAssociation2 = this.findAssociationForState(conflictingState2, stateAssociations);
+
+            if (existingAssociation1) {
+                console.log(`Existing association found for DFA1 State q${conflictingState1.getId()}: ${existingAssociation1}`);
             } else {
-                console.log("No existing associations found for this pair.");
+                console.log(`No existing associations found for DFA1 State q${conflictingState1.getId()}`);
+            }
+
+            if (existingAssociation2) {
+                console.log(`Existing association found for DFA2 State q${conflictingState2.getId()}: ${existingAssociation2}`);
+            } else {
+                console.log(`No existing associations found for DFA2 State q${conflictingState2.getId()}`);
             }
         }
         this.printStateAssociations(stateAssociations);
+    }//end printStateDiscrepancy
+
+    // Helper method to find association for a given state
+    findAssociationForState(state, stateAssociations) {
+        //console.log("Debug: Searching for associations for state:", `q${state.getId()}`);
+    
+        for (let association of stateAssociations) {
+            //console.log("Debug: Current association being checked:", association);
+    
+            // Assuming the first element of the association array contains state IDs
+            let states = association[0];
+            if (states.includes(state.getId().toString())) {
+                //console.log("Debug: Matching association found:", association);
+                return association;
+            }
+        }
+    
+        //console.log("Debug: No association found for state:", `q${state.getId()}`);
+        return null;
     }
 
     getAllSymbols(state1, state2) {
         console.log(`Getting symbols for states: q${state1.getId()} and q${state2.getId()}`);
 
-        let symbols1 = state1.getTransitionSymbols();  // Assuming these are methods returning Sets or Arrays
-        let symbols2 = state2.getTransitionSymbols();
+        // let symbols1 = state1.getTransitionSymbols();  // Assuming these are methods returning Sets or Arrays
+        // let symbols2 = state2.getTransitionSymbols();
 
-        console.log(`Symbols for q${state1.getId()}: [${[...symbols1].join(", ")}]`);
-        console.log(`Symbols for q${state2.getId()}: [${[...symbols2].join(", ")}]`);
+        // console.log(`Symbols for q${state1.getId()}: [${[...symbols1].join(", ")}]`);
+        // console.log(`Symbols for q${state2.getId()}: [${[...symbols2].join(", ")}]`);
 
         
         let symbols = new Set([...state1.getTransitionSymbols(), ...state2.getTransitionSymbols()]);
