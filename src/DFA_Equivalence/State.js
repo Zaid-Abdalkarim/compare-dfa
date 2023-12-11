@@ -55,11 +55,11 @@ class State {
         }
 
         if (this.isStart) {
-            console.log("  ** This is a START state. **");
+            console.log("This is a Start state.");
         }
 
         if (this.isFinal) {
-            console.log("  ** This is a FINAL state. **");
+            console.log("This is a Final state.");
         }
     }
 }

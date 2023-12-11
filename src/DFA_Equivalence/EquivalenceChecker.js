@@ -89,12 +89,14 @@ class EquivalenceChecker {
     }
 
     printStateDiscrepancy(state1, state2, stateAssociations, conflictingState1, conflictingState2) {
+        let discrepancyInfo = "";
         console.log("State discrepancy found:");
         console.log(`State1: ${state1 ? `q${state1.getId()}` : "null"}`);
         console.log(`State2: ${state2 ? `q${state2.getId()}` : "null"}`);
         if (conflictingState1 && conflictingState2) {
             console.log(`Conflict: Trying to associate DFA1 State q${conflictingState1.getId()} with DFA2 State q${conflictingState2.getId()}, which conflicts with existing associations.`);
-                
+            discrepancyInfo = `Reasoning behind Conflict: Trying to associate DFA1 State q${conflictingState1.getId()} with DFA2 State q${conflictingState2.getId()}, which conflicts with existing associations.\n`;
+
             // // Creating a string representation of the conflicting pair, similar to Java's Pair
             // let conflictingPair = `q${conflictingState1.getId()}-q${conflictingState2.getId()}`;
             // if (stateAssociations.has(conflictingPair)) {
@@ -107,18 +109,27 @@ class EquivalenceChecker {
             let existingAssociation1 = this.findAssociationForState(conflictingState1, stateAssociations);
             let existingAssociation2 = this.findAssociationForState(conflictingState2, stateAssociations);
 
+
             if (existingAssociation1) {
-                console.log(`Existing association found for DFA1 State q${conflictingState1.getId()}: ${existingAssociation1}`);
+                let formattedAssociation = existingAssociation1[0].map(id => `q${id}`).join(',');
+                console.log(`Existing association found for DFA1 State q${conflictingState1.getId()}: ${formattedAssociation}, ${existingAssociation1[1]}`);
+                discrepancyInfo += `Existing association found for DFA1 State q${conflictingState1.getId()}: ${formattedAssociation}, ${existingAssociation1[1]}\n`;
+
             } else {
                 console.log(`No existing associations found for DFA1 State q${conflictingState1.getId()}`);
             }
-
+            
             if (existingAssociation2) {
-                console.log(`Existing association found for DFA2 State q${conflictingState2.getId()}: ${existingAssociation2}`);
+                let formattedAssociation = existingAssociation2[0].map(id => `q${id}`).join(',');
+                console.log(`Existing association found for DFA2 State q${conflictingState2.getId()}: ${formattedAssociation}, ${existingAssociation2[1]}`);
+                discrepancyInfo += `Existing association found for DFA1 State q${conflictingState1.getId()}: ${formattedAssociation}, ${existingAssociation1[1]}\n`;
+
             } else {
                 console.log(`No existing associations found for DFA2 State q${conflictingState2.getId()}`);
             }
         }
+
+        console.log(discrepancyInfo);
         this.printStateAssociations(stateAssociations);
     }//end printStateDiscrepancy
 
@@ -158,6 +169,7 @@ class EquivalenceChecker {
         
         return symbols
     }
+
     
 }
 
